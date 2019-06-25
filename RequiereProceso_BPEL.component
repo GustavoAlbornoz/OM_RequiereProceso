@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scdl:component xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://RequiereProceso_Lib/RequiereProceso" xmlns:ns2="http://OM_RequiereProceso_Lib/consultasBD" xmlns:ns3="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta" xmlns:ns4="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta" xmlns:ns5="http://OM_RequiereProceso_Lib/IniciarInstancia" xmlns:process="http://www.ibm.com/xmlns/prod/websphere/scdl/business-process/6.0.0" xmlns:scdl="http://www.ibm.com/xmlns/prod/websphere/scdl/6.0.0" xmlns:wsdl="http://www.ibm.com/xmlns/prod/websphere/scdl/wsdl/6.0.0" displayName="RequiereProceso_BPEL" name="RequiereProceso_BPEL">
+  <interfaces>
+    <interface xsi:type="wsdl:WSDLPortType" preferredInteractionStyle="sync" portType="ns1:RequiereProceso">
+      <scdl:interfaceQualifier xsi:type="scdl:JoinTransaction" value="true"/>
+    </interface>
+  </interfaces>
+  <references>
+    <reference name="consultasBDPartner">
+      <interface xsi:type="wsdl:WSDLPortType" portType="ns2:consultasBD"/>
+      <scdl:referenceQualifier xsi:type="scdl:SuspendTransaction" value="false"/>
+      <scdl:referenceQualifier xsi:type="scdl:Reliability"/>
+      <scdl:referenceQualifier xsi:type="scdl:DeliverAsyncAt" value="commit"/>
+      <wire target="ConsultasBD"/>
+    </reference>
+    <reference name="IniciarInstanciaPartner">
+      <interface xsi:type="wsdl:WSDLPortType" portType="ns5:IniciarInstancia"/>
+      <scdl:referenceQualifier xsi:type="scdl:SuspendTransaction" value="false"/>
+      <scdl:referenceQualifier xsi:type="scdl:Reliability"/>
+      <scdl:referenceQualifier xsi:type="scdl:DeliverAsyncAt" value="commit"/>
+      <wire target="IniciarInstancia"/>
+    </reference>
+    <reference name="CircuitosArqDeVentaPartner">
+      <interface xsi:type="wsdl:WSDLPortType" portType="ns4:CicuitosArqDeVentaDecisionService"/>
+      <scdl:referenceQualifier xsi:type="scdl:SuspendTransaction" value="false"/>
+      <scdl:referenceQualifier xsi:type="scdl:Reliability"/>
+      <scdl:referenceQualifier xsi:type="scdl:DeliverAsyncAt" value="commit"/>
+      <wire target="CircuitosArqDeVenta_SCA"/>
+    </reference>
+    <reference name="ChecklistArqDeVentaPartner">
+      <interface xsi:type="wsdl:WSDLPortType" portType="ns3:ChecklistArqDeVentaDecisionService"/>
+      <wire target="ChecklistArqDeVenta_SCA"/>
+    </reference>
+  </references>
+  <implementation xsi:type="process:ProcessImplementation">
+    <scdl:implementationQualifier xsi:type="scdl:Transaction" value="global"/>
+    <process bpel="/Component2.bpel"/>
+  </implementation>
+</scdl:component>

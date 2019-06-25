@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="Component2" targetNamespace="http://OM_RequiereProceso/Component2Artifacts" xmlns:plnk="http://schemas.xmlsoap.org/ws/2004/03/partner-link/" xmlns:tns="http://OM_RequiereProceso/Component2Artifacts" xmlns:wsdl0="http://RequiereProceso_Lib/RequiereProceso" xmlns:wsdl1="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta" xmlns:wsdl2="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta" xmlns:wsdl3="http://OM_RequiereProceso_Lib/consultasBD" xmlns:wsdl4="http://OM_RequiereProceso_Lib/IniciarInstancia" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <plnk:partnerLinkType name="RequiereProcesoPLT">
+    <plnk:role name="Interface">
+      <plnk:portType name="wsdl0:RequiereProceso"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="consultasBDPLT">
+    <plnk:role name="Interface">
+      <plnk:portType name="wsdl3:consultasBD"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="IniciarInstanciaPLT">
+    <plnk:role name="Interface">
+      <plnk:portType name="wsdl4:IniciarInstancia"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="CircuitosArqDeVentaPartnerPLT">
+    <plnk:role name="Reference">
+      <plnk:portType name="wsdl2:CicuitosArqDeVentaDecisionService"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="ChecklistArqDeVentaDecisionServicePLT">
+    <plnk:role name="Interface">
+      <plnk:portType name="wsdl1:ChecklistArqDeVentaDecisionService"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+    <wsdl:import location="RequiereProceso.wsdl" namespace="http://RequiereProceso_Lib/RequiereProceso"/>
+    <wsdl:import location="consultasBD.wsdl" namespace="http://OM_RequiereProceso_Lib/consultasBD"/>
+    <wsdl:import location="IniciarInstancia.wsdl" namespace="http://OM_RequiereProceso_Lib/IniciarInstancia"/>
+    <wsdl:import location="_235/_56/_0/_10/decisionservice/ws/cicuitosarqdeventa/cicuitosarqdeventa/v75_wsdl.wsdl" namespace="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta"/>
+    <wsdl:import location="_235/_56/_0/_10/decisionservice/ws/checklistarqdeventa/checklistarqdeventa/v75_wsdl.wsdl" namespace="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta"/>
+</wsdl:definitions>

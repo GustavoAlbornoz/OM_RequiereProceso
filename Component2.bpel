@@ -1,0 +1,921 @@
+<?xml version="1.0" encoding="UTF-8"?><bpws:process xmlns:bpws="http://schemas.xmlsoap.org/ws/2004/03/business-process/" xmlns:ns="http://OM_RequiereProceso/Component2Artifacts" xmlns:ns0="http://OM_RequiereProceso_Lib" xmlns:ns1="http://RequiereProceso_Lib/RequiereProceso" xmlns:ns2="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta" xmlns:ns3="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta" xmlns:ns4="http://OM_RequiereProceso_Lib/consultasBD" xmlns:ns5="http://ConsultaTracking_Lib/ConsultarInformacion/ConsultarInformacion" xmlns:ns6="http://OM_RequiereProceso_Lib/IniciarInstancia" xmlns:wpc="http://www.ibm.com/xmlns/prod/websphere/business-process/6.0.0/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.ibm.com/xmlns/prod/websphere/business-process/expression-lang/java/6.0.0/" name="RequierePrceso_BPEL" suppressJoinFailure="yes" targetNamespace="http://OM_RequiereProceso" wpc:continueOnError="no" wpc:displayName="RequierePrceso_BPEL" wpc:executionMode="microflow" wpc:id="1" wpc:validFrom="2018-06-06T16:50:27" wpc:version="IBM_8.5.500">
+  <wpc:javaGlobals>
+    <wpc:import packages="com.main.logger.Log"/>
+    <wpc:import packages="commonj.sdo.DataObject"/>
+    <wpc:import packages="java.util.List"/>
+    <wpc:import packages="com.ibm.websphere.bo.BOXMLSerializer"/>
+    <wpc:import packages="java.io.ByteArrayOutputStream"/>
+  </wpc:javaGlobals>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="RequiereProceso.wsdl" namespace="http://RequiereProceso_Lib/RequiereProceso"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="in_requiereProceso.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="Component2Artifacts.wsdl" namespace="http://OM_RequiereProceso/Component2Artifacts"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="out_requiereProceso.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="_235/_56/_0/_10/decisionservice/ws/checklistarqdeventa/checklistarqdeventa/v75_wsdl.wsdl" namespace="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="_235/_56/_0/_10/decisionservice/ws/cicuitosarqdeventa/cicuitosarqdeventa/v75_wsdl.wsdl" namespace="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="consultasBD.wsdl" namespace="http://OM_RequiereProceso_Lib/consultasBD"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="listaDocumentoOutWS.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="ResultadoOperacion.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="ConsultarInformacion/ConsultarInformacion.wsdl" namespace="http://ConsultaTracking_Lib/ConsultarInformacion/ConsultarInformacion"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="IniciarInstancia.wsdl" namespace="http://OM_RequiereProceso_Lib/IniciarInstancia"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="in_IniciarInstancia.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="out_IniciarInstancia.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="updateInstancia.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="_235/_56/_0/_10/decisionservice/ws/checklistarqdeventa/checklistarqdeventa_wsdl.wsdl" namespace="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="bin/_235/_56/_0/_10/decisionservice/ws/cicuitosarqdeventa/cicuitosarqdeventa/v75_wsdl.wsdl" namespace="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta"/>
+  <bpws:import importType="http://schemas.xmlsoap.org/wsdl/" location="bin/_235/_56/_0/_10/decisionservice/ws/checklistarqdeventa/checklistarqdeventa/v75_wsdl.wsdl" namespace="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="bin/listaDocumentoOutWS.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="bin/updateInstancia.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:import importType="http://www.w3.org/2001/XMLSchema" location="bin/in_requiereProceso.xsd" namespace="http://OM_RequiereProceso_Lib"/>
+  <bpws:partnerLinks>
+    <bpws:partnerLink myRole="Interface" name="RequiereProceso" partnerLinkType="ns:RequiereProcesoPLT" wpc:id="2"/>
+    <bpws:partnerLink name="consultasBDPartner" partnerLinkType="ns:consultasBDPLT" partnerRole="Interface" wpc:id="36"/>
+    <bpws:partnerLink name="IniciarInstanciaPartner" partnerLinkType="ns:IniciarInstanciaPLT" partnerRole="Interface" wpc:id="75"/>
+    <bpws:partnerLink name="CircuitosArqDeVentaPartner" partnerLinkType="ns:CircuitosArqDeVentaPartnerPLT" partnerRole="Reference" wpc:id="162"/>
+    <bpws:partnerLink name="ChecklistArqDeVentaPartner" partnerLinkType="ns:ChecklistArqDeVentaDecisionServicePLT" partnerRole="Interface" wpc:id="171"/>
+  </bpws:partnerLinks>
+  <bpws:variables>
+    <bpws:variable name="input_requiereProceso" type="ns0:in_requiereProceso" wpc:id="6"/>
+    <bpws:variable name="output_requiereProceso" type="ns0:out_requiereProceso" wpc:id="7">
+      <bpws:from>
+        <ns0:out_requiereProceso xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:out_requiereProceso">
+  <resultadoOperacion>
+    <severidad/>
+    <codigo/>
+    <descripcion/>
+  </resultadoOperacion>
+  <requiereProceso>false</requiereProceso>
+  <circuitoOriginal/>
+  <circuitoExclusa/>
+  <porcentajeDeExclusa/>
+  <idSolicitud/>
+</ns0:out_requiereProceso>
+      </bpws:from>
+    </bpws:variable>
+    <bpws:variable name="documentos" type="ns0:listaDocumentoOutWS" wpc:id="44">
+      <bpws:from>
+        <ns0:listaDocumentoOutWS xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:listaDocumentoOutWS">
+  <idCircuito>0</idCircuito>
+  <nroSolicitud/>
+  <semaforo/>
+  <uuid/>
+  <idAccion>0</idAccion>
+</ns0:listaDocumentoOutWS>
+      </bpws:from>
+    </bpws:variable>
+    <bpws:variable name="outputInsertarBD" type="xsd:string" wpc:id="45"/>
+    <bpws:variable name="respuestaTransaccion" type="ns0:ResultadoOperacion" wpc:id="60">
+      <bpws:from>
+        <ns0:ResultadoOperacion xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:ResultadoOperacion">
+  <severidad/>
+  <codigo/>
+  <descripcion/>
+</ns0:ResultadoOperacion>
+      </bpws:from>
+    </bpws:variable>
+    <bpws:variable name="tiempo_inicio" type="xsd:long" wpc:id="61"/>
+    <bpws:variable name="tiempo_fin" type="xsd:long" wpc:id="59"/>
+    <bpws:variable name="uuid" type="xsd:string" wpc:id="62"/>
+    <bpws:variable name="input_IniciarInstancia" type="ns0:in_IniciarInstancia" wpc:id="77">
+      <bpws:from>
+        <ns0:in_IniciarInstancia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:in_IniciarInstancia">
+  <circuitoProceso>0</circuitoProceso>
+  <solicitud/>
+  <solicitudCabecera/>
+  <proximoPaso/>
+  <uuid/>
+</ns0:in_IniciarInstancia>
+      </bpws:from>
+    </bpws:variable>
+    <bpws:variable name="output_IniciarInstancia" type="ns0:out_IniciarInstancia" wpc:id="78"/>
+    <bpws:variable name="input_updateInstancia" type="ns0:updateInstancia" wpc:id="80">
+      <bpws:from>
+        <ns0:updateInstancia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns0:updateInstancia">
+  <nroSolicitud/>
+  <nroInstancia/>
+  <nombreProceso/>
+  <uuid/>
+</ns0:updateInstancia>
+      </bpws:from>
+    </bpws:variable>
+    <bpws:variable element="ns2:ChecklistArqDeVentaRequest" name="ChecklistArqDeVentaRequest" wpc:id="85">
+      <bpws:from>
+        <ChecklistArqDeVentaRequest xmlns="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta">
+  <ns0:DecisionID xmlns:ns0="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta"/>
+  <ns1:solicitud xmlns:ns1="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta/param">
+    <solicitud>
+      <NroDeSolicitud/>
+      <Legajo/>
+      <LegajoOficialComer/>
+      <Canal/>
+      <NroDeSucu/>
+      <SemaforoGenerico/>
+      <Comercializadora/>
+      <Convenio/>
+      <Riesgo/>
+      <TipoDeSolicitud/>
+      <Ofertas/>
+      <DestinoDeFondos/>
+    </solicitud>
+  </ns1:solicitud>
+</ChecklistArqDeVentaRequest>
+      </bpws:from>
+    </bpws:variable>
+    <bpws:variable element="ns2:ChecklistArqDeVentaResponse" name="ChecklistArqDeVentaResponse" wpc:id="86"/>
+    <bpws:variable element="ns3:CicuitosArqDeVentaRequest" name="CicuitosArqDeVentaRequest" wpc:id="89">
+      <bpws:from>
+        <CicuitosArqDeVentaRequest xmlns="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta">
+  <ns0:DecisionID xmlns:ns0="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta"/>
+  <ns1:solicitud xmlns:ns1="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta/param">
+    <solicitud>
+      <NroDeSolicitud/>
+      <Legajo/>
+      <LegajoOficialComer/>
+      <Canal/>
+      <NroDeSucu/>
+      <SemaforoGenerico/>
+      <Comercializadora/>
+      <Convenio/>
+      <Riesgo/>
+      <TipoDeSolicitud/>
+      <Ofertas/>
+      <DestinoDeFondos/>
+    </solicitud>
+  </ns1:solicitud>
+</CicuitosArqDeVentaRequest>
+      </bpws:from>
+    </bpws:variable>
+    <bpws:variable element="ns3:CicuitosArqDeVentaResponse" name="CicuitosArqDeVentaResponse" wpc:id="90"/>
+  </bpws:variables>
+  <bpws:sequence name="HiddenSequence" wpc:id="1073741827">
+    <bpws:receive createInstance="yes" name="Receive" operation="requiereProceso" partnerLink="RequiereProceso" portType="ns1:RequiereProceso" wpc:displayName="Receive" wpc:id="4" wpc:transactionalBehavior="commitAfter">
+      <wpc:output>
+        <wpc:parameter name="input_requiereProceso" variable="input_requiereProceso"/>
+      </wpc:output>
+    </bpws:receive>
+    <bpws:invoke name="Snippet_LogInicio" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Inicio" wpc:id="94">
+      <wpc:script>
+        <wpc:javaCode><![CDATA[tiempo_inicio = System.currentTimeMillis();
+uuid = processInstance().getID().toString();
+
+Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Inicio. Solicitud: " + input_requiereProceso.getString("numeroSolicitud"));
+
+try{
+	BOXMLSerializer serializer =(BOXMLSerializer) com.ibm.websphere.sca.ServiceManager.INSTANCE.locateService("com/ibm/websphere/bo/BOXMLSerializer");
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	serializer.writeDataObject(input_requiereProceso, input_requiereProceso.getType().getURI(), input_requiereProceso.getType().getName(), stream);
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Request BUS: " + stream.toString());
+}catch (Exception e){ 
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Fallo el Request " + e.getMessage());
+}]]></wpc:javaCode>
+      </wpc:script>
+    </bpws:invoke>
+    <bpws:invoke name="Snippet_Mapeo_InRequiereProceso_InCircuito" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Mapeo_InRequiereProceso_InCircuito" wpc:id="118">
+      <wpc:script>
+        <wpc:javaCode><![CDATA[com.ibm.websphere.bo.BOFactory boFactory = (com.ibm.websphere.bo.BOFactory) com.ibm.websphere.sca.ServiceManager.INSTANCE.locateService("com/ibm/websphere/bo/BOFactory");
+	
+if(input_requiereProceso != null){
+	//Mapeo datos solicitud
+	CicuitosArqDeVentaRequest.setString("DecisionID", "");
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/NroDeSolicitud", input_requiereProceso.getString("numeroSolicitud"));
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/Canal", input_requiereProceso.getString("canal"));
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/NroDeSucu", input_requiereProceso.getString("numeroDeSucursal"));
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/SemaforoGenerico", input_requiereProceso.getString("semaforoGenerico"));
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/Comercializadora", input_requiereProceso.getString("comercializadora"));
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/Convenio", input_requiereProceso.getString("convenio"));
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/Riesgo", input_requiereProceso.getString("riesgo"));
+	CicuitosArqDeVentaRequest.setString("solicitud/solicitud/TipoDeSolicitud", input_requiereProceso.getString("tipoSolicitud"));
+				
+	if(input_requiereProceso.getList("productos") != null){
+		//Mapeo datos productos
+		List<DataObject> ofertas = CicuitosArqDeVentaRequest.getList("solicitud/solicitud/Ofertas/Oferta");
+		int i = 0;
+		while(i < input_requiereProceso.getList("productos").size()){
+			//Mapeo tag producto
+			/*producto es el input, oferta es el output*/
+			DataObject producto = (DataObject) input_requiereProceso.getList("productos").get(i);
+			DataObject oferta = boFactory.create("circuitosArqDeVenta", "Oferta");
+								
+			oferta.setString("IDProducto", producto.getString("idProducto"));
+			oferta.setString("DescripcionProducto", producto.getString("descripcionProducto"));
+			oferta.setString("Familia", producto.getString("familia"));
+			oferta.setString("SubFamilia", producto.getString("subFamilia"));
+			oferta.setString("Modificador", producto.getString("modificador"));
+			oferta.setString("Accion", producto.getString("accion"));
+			oferta.setBoolean("ProductoPrincipal", producto.getBoolean("esProductoPrincipal"));
+			oferta.setDouble("Monto", producto.getDouble("monto"));
+			oferta.setDouble("MontoDisponible", producto.getDouble("montoDisponible"));
+			oferta.setString("SucursalDeRadicacion", producto.getString("sucursalRadicacion"));
+			
+			if(producto.getList("particularidades") != null){
+				//Mapeo tag particularidades del tag producto
+				int z = 0;
+				while(z < producto.getList("particularidades").size()){
+					DataObject particularidadProducto = (DataObject) producto.getList("particularidades").get(z);
+					String codigo = particularidadProducto.getString("codigo");
+					if(codigo.equals("DestinoHipotecario"))
+						CicuitosArqDeVentaRequest.setString("solicitud/solicitud/DestinoDeFondos", particularidadProducto.getString("descripcion"));
+					try{
+						oferta.set(codigo, particularidadProducto.get("descripcion"));
+					}catch(Exception ex){
+						Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ "; " + ex.toString() + ". Error al mapear el campo " + particularidadProducto.getString("codigo") + " a ODM");
+					}
+					
+					z++;
+				}
+			}else{
+				Log.logTomAplicaciones_debug(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";No hay particularidades para el producto " + producto.getString("descripcionProducto"));
+			}
+					
+			if(producto.getList("integrantes") != null){
+				DataObject auxIntegrante = boFactory.create("circuitosArqDeVenta","Integrantes");
+				oferta.setDataObject("Integrantes", auxIntegrante);
+				List<DataObject> integrantes = oferta.getList("Integrantes/Integrante");
+				int j = 0;
+				while(j < producto.getList("integrantes").size()){
+					//Mapeo tag integrante
+					DataObject inIntegrante = (DataObject) producto.getList("integrantes").get(j);
+					DataObject outIntegrante = boFactory.create("circuitosArqDeVenta", "Integrante");
+					outIntegrante.setInt("idHost", (int) inIntegrante.getDouble("idHost") );
+					outIntegrante.setString("Apellido", inIntegrante.getString("apellido"));
+					outIntegrante.setString("Nombre", inIntegrante.getString("nombre"));
+					outIntegrante.setString("TipoIntegrante", inIntegrante.getString("tipoIntegrante"));
+					outIntegrante.setString("SemaforoIndividual", inIntegrante.getString("semaforoIndividual"));
+					outIntegrante.setBoolean("ResponsableImpositivo", inIntegrante.getBoolean("responsableImpositivo"));
+					outIntegrante.setInt("Edad", inIntegrante.getInt("edad"));
+					outIntegrante.setString("EstadoCivil", inIntegrante.getString("estadoCivil"));
+					outIntegrante.setString("TipoDeIngreso", "0");
+							
+					if(inIntegrante.getDataObject("documento") != null){
+						outIntegrante.setString("DocTipo", inIntegrante.getString("documento/tipoDocumento"));
+						outIntegrante.setString("NroDNI", inIntegrante.getString("documento/numeroDocumento"));
+					}
+					
+					if(inIntegrante.getList("particularidades") != null){
+						int k = 0;
+						while(k < inIntegrante.getList("particularidades").size()){
+							//Mapeo tag particularidades integrantes
+							DataObject particularidad = (DataObject) inIntegrante.getList("particularidades").get(k);
+							String codigo = particularidad.getString("codigo");
+							//Particularidades integrante 1
+							if(codigo.equals("ContactoTipoIngreso")) 
+								outIntegrante.setString("TipoDeIngreso",particularidad.getString("descripcion"));									
+							if(codigo.equals("ContactoIngresoReld"))
+								outIntegrante.setDouble("IngresoReld", Double.parseDouble(particularidad.getString("descripcion")));
+							if(codigo.equals("ContactoIngresoMonot"))
+								outIntegrante.setDouble("IngresoMonot", Double.parseDouble(particularidad.getString("descripcion")));									
+							if(codigo.equals("ContactoIngresoAuto"))
+								outIntegrante.setDouble("IngresoAuto", Double.parseDouble(particularidad.getString("descripcion")));
+								
+							//Particularidades integrante 2
+							if(codigo.equals("Contacto2TipoIngreso")) 
+								outIntegrante.setString("TipoDeIngreso",particularidad.getString("descripcion"));									
+							if(codigo.equals("Contacto2IngresoReld"))
+								outIntegrante.setDouble("IngresoReld", Double.parseDouble(particularidad.getString("descripcion")));								
+							if(codigo.equals("Contacto2IngresoMonot"))
+								outIntegrante.setDouble("IngresoMonot", Double.parseDouble(particularidad.getString("descripcion")));									
+							if(codigo.equals("Contacto2IngresoAuto"))
+								outIntegrante.setDouble("IngresoAuto", Double.parseDouble(particularidad.getString("descripcion")));
+								
+							try{
+								outIntegrante.set(codigo, particularidad.get("descripcion"));
+							}catch(Exception ex){
+								Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ "; " + ex.toString() + ". Error al mapear dinamicanmente el campo " + particularidad.getString("codigo") + " a ODM");
+							}
+								
+							k++;
+						}
+					}else{
+						Log.logTomAplicaciones_debug(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";No hay particularidades para el integrante " + inIntegrante.getString("apellido") + ", " + inIntegrante.getString("nombre"));
+					}	
+					integrantes.add(outIntegrante);					
+					j++;
+				}
+			}	
+			ofertas.add(oferta);
+			i++;
+		}
+	}
+	
+	try{
+		List<DataObject> particularidades = input_requiereProceso.getList("particularidades");
+		for(DataObject particularidad : particularidades){
+			try{
+				CicuitosArqDeVentaRequest.set("solicitud/solicitud/" + particularidad.getString("codigo"), particularidad.get("descripcion"));	
+			}catch(Exception ex){
+				Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ "; " + ex.toString() + ". Error al mapear el campo " + particularidad.getString("codigo") + " a ODM");
+			}
+		}
+	}catch(NullPointerException ex){
+		Log.logTomAplicaciones_debug(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";No hay particularidades para la solicitud " + input_requiereProceso.getString("numeroSolicitud"));
+	}
+
+}
+]]></wpc:javaCode>
+      </wpc:script>
+    </bpws:invoke>
+    <bpws:invoke name="Snippet_LogRequestObtenerCircuito" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Request Obtener Circuito" wpc:id="47">
+      <wpc:script>
+        <wpc:javaCode><![CDATA[try{
+	BOXMLSerializer serializer =(BOXMLSerializer) com.ibm.websphere.sca.ServiceManager.INSTANCE.locateService("com/ibm/websphere/bo/BOXMLSerializer");
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	serializer.writeDataObject(CicuitosArqDeVentaRequest, CicuitosArqDeVentaRequest.getType().getURI(), CicuitosArqDeVentaRequest.getType().getName(), stream); 
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Obtener Circuito: " + stream.toString());
+}catch(Exception e){ 
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Fallo el Request " + e.getMessage());
+}
+
+]]></wpc:javaCode>
+      </wpc:script>
+    </bpws:invoke>
+    <bpws:invoke name="ObtenerCircuito" operation="CicuitosArqDeVenta" partnerLink="CircuitosArqDeVentaPartner" portType="ns3:CicuitosArqDeVentaDecisionService" wpc:continueOnError="inherit" wpc:displayName="Obtener Circuito" wpc:id="163">
+      <wpc:input>
+        <wpc:parameter name="CicuitosArqDeVentaRequest" variable="CicuitosArqDeVentaRequest"/>
+      </wpc:input>
+      <wpc:output>
+        <wpc:parameter name="CicuitosArqDeVentaResponse" variable="CicuitosArqDeVentaResponse"/>
+      </wpc:output>
+      <bpws:catch faultMessageType="ns3:CicuitosArqDeVentaSoapFault" faultName="ns3:CicuitosArqDeVentaSoapFault" faultVariable="CicuitosArqDeVentaSoapFaultVariable" wpc:displayName="CicuitosArqDeVentaSoapFault" wpc:id="166" wpc:variableId="167">
+        <bpws:sequence name="HiddenSequence4" wpc:id="1073741992">
+          <bpws:invoke name="Snippet_LogErrorObtenerCircuito" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Error Obtener Circuito" wpc:id="97">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[respuestaTransaccion.setString("codigo","102");
+respuestaTransaccion.setString("severidad","Error");
+respuestaTransaccion.setString("descripcion","Error tecnico al obtener circuito: " + input_requiereProceso.getString("numeroSolicitud") );
+output_requiereProceso.setDataObject("resultadoOperacion",respuestaTransaccion);
+
+com.ibm.bpe.api.BpelException bpelexception = getCurrentFaultAsException();
+String mensaje = "Error tecnico al obtener circuito: " + bpelexception.getRootCause().toString();
+Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";" + mensaje);
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:reply name="Reply_LogErrorObtenerCircuito" operation="requiereProceso" partnerLink="RequiereProceso" portType="ns1:RequiereProceso" wpc:displayName="Reply" wpc:id="99">
+            <wpc:input>
+              <wpc:parameter name="output_requiereProceso" variable="output_requiereProceso"/>
+            </wpc:input>
+          </bpws:reply>
+          <bpws:terminate name="Terminate_ObtenerCircuito" wpc:displayName="Terminate" wpc:id="98"/>
+        </bpws:sequence>
+      </bpws:catch>
+    </bpws:invoke>
+    <bpws:invoke name="Snippet_LogResponseObtenerCircuito" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Response Obtener Circuito" wpc:id="125">
+      <wpc:script>
+        <wpc:javaCode><![CDATA[try{
+	BOXMLSerializer serializer =(BOXMLSerializer) com.ibm.websphere.sca.ServiceManager.INSTANCE.locateService("com/ibm/websphere/bo/BOXMLSerializer");
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	serializer.writeDataObject(CicuitosArqDeVentaResponse, CicuitosArqDeVentaResponse.getType().getURI(), CicuitosArqDeVentaResponse.getType().getName(), stream);
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Respuesta Circuito: " + stream.toString());
+}catch(Exception e){ 
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Fallo el Request " + e.getMessage());
+}
+]]></wpc:javaCode>
+      </wpc:script>
+    </bpws:invoke>
+    <bpws:switch name="Choice_RequiereProceso" wpc:displayName="Requiere Proceso?" wpc:id="20">
+      <bpws:case wpc:displayName="No" wpc:id="133">
+        <bpws:condition expressionLanguage="http://www.ibm.com/xmlns/prod/websphere/business-process/expression-lang/java/6.0.0/"><![CDATA[try{
+	return CicuitosArqDeVentaResponse.getInt("circuito/circuito/idCircuito") == 1 || CicuitosArqDeVentaResponse.getInt("circuito/circuito/idCircuito") == 28;
+}catch(Exception e){
+	return false;
+}
+]]></bpws:condition>
+        <bpws:sequence name="HiddenSequence5" wpc:id="1073741984">
+          <bpws:invoke name="Snippet_SetearNoRequiereProceso" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Setear No Requiere Proceso" wpc:id="135">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[String idAccionCircuito = CicuitosArqDeVentaResponse.getString("circuito/circuito/idAccionCircuito") != null ? CicuitosArqDeVentaResponse.getString("circuito/circuito/idAccionCircuito") : "4";
+
+output_requiereProceso.setBoolean("requiereProceso", false);
+output_requiereProceso.setString("circuitoOriginal", idAccionCircuito);
+
+respuestaTransaccion.setString("codigo", "000");
+respuestaTransaccion.setString("severidad", "OK");
+respuestaTransaccion.setString("descripcion", "Operacion realizada satisfactoriamente, no requiere proceso");
+output_requiereProceso.setDataObject("resultadoOperacion", respuestaTransaccion);
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:reply name="Reply" operation="requiereProceso" partnerLink="RequiereProceso" portType="ns1:RequiereProceso" wpc:displayName="Reply" wpc:id="161">
+            <wpc:input>
+              <wpc:parameter name="output_requiereProceso" variable="output_requiereProceso"/>
+            </wpc:input>
+          </bpws:reply>
+        </bpws:sequence>
+      </bpws:case>
+      <bpws:otherwise wpc:id="26">
+        <bpws:sequence name="HiddenSequence2" wpc:id="1073741851">
+          <bpws:invoke name="Snippet_SetearResponseRequiereProceso" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Setear Response Requiere Proceso" wpc:id="136">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[output_requiereProceso.setBoolean("requiereProceso", true);
+output_requiereProceso.setString("circuitoOriginal", CicuitosArqDeVentaResponse.getString("circuito/circuito/idAccionCircuito"));
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:invoke name="Snippet_LogPseudo-Fin" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Pseudo-Fin" wpc:id="72">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[respuestaTransaccion.setString("codigo", "000");
+respuestaTransaccion.setString("severidad", "OK");
+respuestaTransaccion.setString("descripcion", "Operacion realizada satisfactoriamente, se procedera a inicializar la instancia");
+
+output_requiereProceso.setDataObject("resultadoOperacion", respuestaTransaccion);
+output_requiereProceso.setString("idSolicitud", input_requiereProceso.getString("numeroSolicitud"));
+
+tiempo_fin = System.currentTimeMillis();
+String mensaje = "Tiempo: " + (tiempo_fin - tiempo_inicio) + " ms. PseudoFin. " + output_requiereProceso.getString("resultadoOperacion/descripcion");
+
+Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";" + mensaje);]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:reply name="Reply_PseudoFin" operation="requiereProceso" partnerLink="RequiereProceso" portType="ns1:RequiereProceso" wpc:displayName="Reply" wpc:id="31">
+            <wpc:input>
+              <wpc:parameter name="output_requiereProceso" variable="output_requiereProceso"/>
+            </wpc:input>
+          </bpws:reply>
+          <bpws:invoke name="Snippet_Mapeo_InRequiereProceso_InChecklist" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Mapeo_InRequiereProceso_InChecklist" wpc:id="120">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[com.ibm.websphere.bo.BOFactory boFactory = (com.ibm.websphere.bo.BOFactory) com.ibm.websphere.sca.ServiceManager.INSTANCE.locateService("com/ibm/websphere/bo/BOFactory");
+
+if(input_requiereProceso != null){
+	//Mapeo tag solicitud
+	ChecklistArqDeVentaRequest.setString("DecisionID", "");
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/NroDeSolicitud", input_requiereProceso.getString("numeroSolicitud"));
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/Canal", input_requiereProceso.getString("canal"));
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/NroDeSucu", input_requiereProceso.getString("numeroDeSucursal"));
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/SemaforoGenerico", input_requiereProceso.getString("semaforoGenerico"));
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/Comercializadora", input_requiereProceso.getString("comercializadora"));
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/Convenio", input_requiereProceso.getString("convenio"));
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/Riesgo", input_requiereProceso.getString("riesgo"));
+	ChecklistArqDeVentaRequest.setString("solicitud/solicitud/TipoDeSolicitud", input_requiereProceso.getString("tipoSolicitud"));
+
+	if(input_requiereProceso.getList("productos") != null){
+		List<DataObject> ofertas = ChecklistArqDeVentaRequest.getList("solicitud/solicitud/Ofertas/Oferta");
+		int i=0;
+		while(i < input_requiereProceso.getList("productos").size()){
+			//Mapeo tag producto
+			/*producto es el input, oferta es el output*/
+			DataObject producto = (DataObject) input_requiereProceso.getList("productos").get(i);
+			DataObject oferta = boFactory.create("checkListArqDeVenta", "Oferta");
+
+			oferta.setString("IDProducto", producto.getString("idProducto"));
+			oferta.setString("DescripcionProducto", producto.getString("descripcionProducto"));
+			oferta.setString("Familia", producto.getString("familia"));
+			oferta.setString("SubFamilia", producto.getString("subFamilia"));
+			oferta.setString("Modificador", producto.getString("modificador"));
+			oferta.setString("Accion", producto.getString("accion"));
+			oferta.setBoolean("ProductoPrincipal", producto.getBoolean("esProductoPrincipal"));
+			oferta.setDouble("Monto", producto.getDouble("monto"));
+			oferta.setString("SucursalDeRadicacion", producto.getString("sucursalRadicacion"));
+			
+			if(producto.getList("particularidades") != null){
+				//Mapeo tag particularidades del tag producto
+				int z=0;
+				while(z < producto.getList("particularidades").size()){
+					DataObject particularidadProducto = (DataObject) producto.getList("particularidades").get(z);
+					String codigo = particularidadProducto.getString("codigo");
+					if(codigo.equals("DestinoHipotecario"))
+						ChecklistArqDeVentaRequest.setString("solicitud/solicitud/DestinoDeFondos", particularidadProducto.getString("descripcion"));
+					try{
+						oferta.set(codigo, particularidadProducto.get("descripcion"));
+					}catch(Exception ex){
+						Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ "; " + ex.toString() + ". Error al mapear el campo " + particularidadProducto.getString("codigo") + " a ODM");
+					}
+					z++;
+				}
+			}else{
+				Log.logTomAplicaciones_debug(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";No hay particularidades para el producto " + producto.getString("descripcionProducto"));
+			}
+			
+			if(producto.getList("integrantes") != null){
+				DataObject auxIntegrante = boFactory.create("checkListArqDeVenta","Integrantes");
+				oferta.setDataObject("Integrantes",auxIntegrante);
+				List<DataObject> integrantes = oferta.getDataObject("Integrantes").getList("Integrante");
+				int j=0;
+				while(j < producto.getList("integrantes").size()){
+					//Mapeo tag integrante
+					DataObject inIntegrante = (DataObject) producto.getList("integrantes").get(j);
+					DataObject outIntegrante = boFactory.create("checkListArqDeVenta", "Integrante");
+					outIntegrante.setInt("idHost", (int) inIntegrante.getDouble("idHost") );
+					outIntegrante.setString("Apellido", inIntegrante.getString("apellido"));
+					outIntegrante.setString("Nombre", inIntegrante.getString("nombre"));
+					outIntegrante.setString("TipoIntegrante", inIntegrante.getString("tipoIntegrante"));
+					outIntegrante.setString("SemaforoIndividual", inIntegrante.getString("semaforoIndividual"));
+					outIntegrante.setBoolean("ResponsableImpositivo", inIntegrante.getBoolean("responsableImpositivo"));
+					outIntegrante.setInt("Edad", inIntegrante.getInt("edad"));
+					outIntegrante.setString("EstadoCivil", inIntegrante.getString("estadoCivil"));
+					outIntegrante.setString("TipoDeIngreso", "0");
+					
+					if(inIntegrante.getDataObject("documento") != null){
+						outIntegrante.setString("DocTipo", inIntegrante.getString("documento/tipoDocumento"));
+						outIntegrante.setString("NroDNI", inIntegrante.getString("documento/numeroDocumento"));
+					}
+
+					if(inIntegrante.getList("particularidades") != null){
+						int k = 0;
+						while(k < inIntegrante.getList("particularidades").size()){
+							//Mapeo tag particularidades integrantes
+							DataObject particularidad = (DataObject) inIntegrante.getList("particularidades").get(k);
+							String codigo = particularidad.getString("codigo");
+							//Particularidades integrante 1
+							if(codigo.equals("ContactoTipoIngreso")) 
+								outIntegrante.setString("TipoDeIngreso", particularidad.getString("descripcion"));			
+							if(codigo.equals("ContactoIngresoReld"))
+								outIntegrante.setDouble("IngresoReld", Double.parseDouble(particularidad.getString("descripcion")));	
+							if(codigo.equals("ContactoIngresoMonot"))
+								outIntegrante.setDouble("IngresoMonot", Double.parseDouble(particularidad.getString("descripcion")));
+							if(codigo.equals("ContactoIngresoAuto"))
+								outIntegrante.setDouble("IngresoAuto", Double.parseDouble(particularidad.getString("descripcion")));
+								
+							//Particularidades integrante 2
+							if(codigo.equals("Contacto2TipoIngreso")) 
+								outIntegrante.setString("TipoDeIngreso", particularidad.getString("descripcion"));												
+							if(codigo.equals("Contacto2IngresoReld"))
+								outIntegrante.setDouble("IngresoReld", Double.parseDouble(particularidad.getString("descripcion")));
+							if(codigo.equals("Contacto2IngresoMonot"))
+								outIntegrante.setDouble("IngresoMonot", Double.parseDouble(particularidad.getString("descripcion")));
+							if(codigo.equals("Contacto2IngresoAuto"))
+								outIntegrante.setDouble("IngresoAuto", Double.parseDouble(particularidad.getString("descripcion")));
+	
+							try{
+								outIntegrante.set(codigo, particularidad.get("descripcion"));
+							}catch(Exception ex){
+								Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ "; " + ex.toString() + ". Error al mapear el campo " + particularidad.getString("codigo") + " a ODM");
+							}	
+							k++;
+						}
+					}else{
+						Log.logTomAplicaciones_debug(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";No hay particularidades para el integrante " + inIntegrante.getString("apellido") + ", " + inIntegrante.getString("nombre"));
+					}
+					integrantes.add(outIntegrante);					
+					j++;
+				}
+			}	
+			ofertas.add(oferta);
+			i++;
+		}
+	}
+			
+	try{
+		List<DataObject> particularidades = input_requiereProceso.getList("particularidades");
+		for(DataObject particularidad : particularidades){
+			try{
+				ChecklistArqDeVentaRequest.set("solicitud/solicitud/" + particularidad.getString("codigo"), particularidad.get("descripcion"));	
+			}catch(Exception ex){
+				Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ "; " + ex.toString() + ". Error al mapear el campo " + particularidad.getString("codigo") + " a ODM");
+			}
+		}
+	}catch(NullPointerException ex){
+		Log.logTomAplicaciones_debug(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";No hay particularidades para la solicitud " + input_requiereProceso.getString("numeroSolicitud"));
+	}
+		
+}
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:invoke name="Snippet_LogRequestObtenerChecklist" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Request Obtener Checklist" wpc:id="126">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[try{
+	BOXMLSerializer serializer =(BOXMLSerializer) com.ibm.websphere.sca.ServiceManager.INSTANCE.locateService("com/ibm/websphere/bo/BOXMLSerializer");
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();	
+	serializer.writeDataObject(ChecklistArqDeVentaRequest, ChecklistArqDeVentaRequest.getType().getURI(), ChecklistArqDeVentaRequest.getType().getName(), stream);
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Obtener Checklist: " + stream.toString());
+}catch(Exception e){ 
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Fallo el Request " + e.getMessage());
+}
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:invoke name="ObtenerChecklist" operation="ChecklistArqDeVenta" partnerLink="ChecklistArqDeVentaPartner" portType="ns2:ChecklistArqDeVentaDecisionService" wpc:continueOnError="inherit" wpc:displayName="Obtener Checklist" wpc:id="170">
+            <wpc:input>
+              <wpc:parameter name="ChecklistArqDeVentaRequest" variable="ChecklistArqDeVentaRequest"/>
+            </wpc:input>
+            <wpc:output>
+              <wpc:parameter name="ChecklistArqDeVentaResponse" variable="ChecklistArqDeVentaResponse"/>
+            </wpc:output>
+            <bpws:catch faultMessageType="ns2:ChecklistArqDeVentaSoapFault" faultName="ns2:ChecklistArqDeVentaSoapFault" faultVariable="ChecklistArqDeVentaSoapFaultVariable" wpc:displayName="ChecklistArqDeVentaSoapFault" wpc:id="172" wpc:variableId="173">
+              <bpws:sequence name="HiddenSequence6" wpc:id="1073741998">
+                <bpws:invoke name="Snippet_LogErrorObtenerChecklist" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Error Obtener Checklist" wpc:id="119">
+                  <wpc:script>
+                    <wpc:javaCode><![CDATA[respuestaTransaccion.setString("codigo", "102");
+respuestaTransaccion.setString("severidad", "Error");
+respuestaTransaccion.setString("descripcion", "Error tecnico al obtener checklist: " + input_requiereProceso.getString("numeroSolicitud"));
+
+output_requiereProceso.setDataObject("resultadoOperacion", respuestaTransaccion);
+
+com.ibm.bpe.api.BpelException bpelexception = getCurrentFaultAsException();
+String mensaje = "Error tecnico al obtener checklist: " + bpelexception.getRootCause().toString();
+Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";" + mensaje);]]></wpc:javaCode>
+                  </wpc:script>
+                </bpws:invoke>
+                <bpws:reply name="Reply_LogErrorObtenerChecklist" operation="requiereProceso" partnerLink="RequiereProceso" portType="ns1:RequiereProceso" wpc:displayName="Reply" wpc:id="115">
+                  <wpc:input>
+                    <wpc:parameter name="output_requiereProceso" variable="output_requiereProceso"/>
+                  </wpc:input>
+                </bpws:reply>
+                <bpws:terminate name="Terminate_ObtenerChecklist" wpc:displayName="Terminate" wpc:id="116"/>
+              </bpws:sequence>
+            </bpws:catch>
+          </bpws:invoke>
+          <bpws:invoke name="Snippet_LogResponseObtenerChecklist" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Response Obtener Checklist" wpc:id="127">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[try{
+	BOXMLSerializer serializer =(BOXMLSerializer) com.ibm.websphere.sca.ServiceManager.INSTANCE.locateService("com/ibm/websphere/bo/BOXMLSerializer");
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	serializer.writeDataObject(ChecklistArqDeVentaResponse, ChecklistArqDeVentaResponse.getType().getURI(), ChecklistArqDeVentaResponse.getType().getName(), stream);
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Respuesta Checklist: " + stream.toString());
+}catch (Exception e){ 
+	Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName() + ";" + "Fallo el Request " + e.getMessage());
+}
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:invoke name="DataMap" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="DataMap" wpc:id="178">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[java.util.LinkedHashMap __result__1 = new java.util.LinkedHashMap();
+java.util.LinkedHashSet __result__2 = new java.util.LinkedHashSet();
+String __result__5 = "ChecklistArqDeVentaResponse";
+java.lang.Object __result__4 = __result__1.put(__result__5, ChecklistArqDeVentaResponse);
+String __result__6 = "documentos";
+boolean __result__7 = __result__2.add(__result__6);
+java.util.Map __result__8 = null;
+try {
+	{// DataMapALaBase.xsl
+		__result__8 = com.ibm.wbiserver.transform.util.TransformTypeHelper.transformTypes(__result__1, __result__2,"DataMapALaBase.xsl");
+	}
+}
+catch(java.lang.Exception ex){
+	java.lang.Exception __result__13;
+	ex.printStackTrace();
+}
+String __result__10 = "documentos";
+java.lang.Object __result__11 = __result__8.get(__result__10);
+documentos = (commonj.sdo.DataObject)__result__11;
+
+//@generated:com.ibm.wbit.activity.ui
+//<?xml version="1.0" encoding="UTF-8"?>
+//<com.ibm.wbit.activity:CompositeActivity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.ibm.wbit.activity="http:///com/ibm/wbit/activity.ecore" name="ActivityMethod">
+//  <result name="Result">
+//    <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="void"/>
+//  </result>
+//  <exceptions>
+//    <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="com.ibm.bpe.api.ProcessException"/>
+//  </exceptions>
+//  <executableElements xsi:type="com.ibm.wbit.activity:JavaActivity" name="inputsToObjectMap" category="java.util.LinkedHashMap" className="java.util.LinkedHashMap" constructor="true" memberName="LinkedHashMap">
+//    <result>
+//      <dataOutputs target="//@executableElements.3/@parameters.0"/>
+//      <dataOutputs target="//@executableElements.7/@parameters.0"/>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.LinkedHashMap"/>
+//    </result>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:JavaActivity" name="outputs" category="java.util.LinkedHashSet" className="java.util.LinkedHashSet" constructor="true" memberName="LinkedHashSet">
+//    <result>
+//      <dataOutputs target="//@executableElements.6/@parameters.0"/>
+//      <dataOutputs target="//@executableElements.7/@parameters.1"/>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.LinkedHashSet"/>
+//    </result>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:Expression" value="ChecklistArqDeVentaResponse" variable="true">
+//    <dataOutputs target="//@executableElements.3/@parameters.2"/>
+//    <type xsi:type="com.ibm.wbit.activity:XSDElementType" name="ChecklistArqDeVentaResponse" namespace="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta"/>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:JavaActivity" name="put" category="java.util.HashMap" className="java.util.HashMap" memberName="put">
+//    <parameters name="HashMap" dataInputs="//@executableElements.0/@result/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.HashMap"/>
+//    </parameters>
+//    <parameters name="arg0" dataInputs="//@executableElements.4/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="K"/>
+//    </parameters>
+//    <parameters name="arg1" dataInputs="//@executableElements.2/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="V"/>
+//    </parameters>
+//    <result>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="V"/>
+//    </result>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:VariableNameExpression" value="&quot;ChecklistArqDeVentaResponse&quot;" assignable="false" nameOfVariable="ChecklistArqDeVentaResponse">
+//    <dataOutputs target="//@executableElements.3/@parameters.1"/>
+//    <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="String"/>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:VariableNameExpression" value="&quot;documentos&quot;" assignable="false" nameOfVariable="documentos">
+//    <dataOutputs target="//@executableElements.6/@parameters.1"/>
+//    <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="String"/>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:JavaActivity" name="add" category="java.util.HashSet" className="java.util.HashSet" memberName="add">
+//    <parameters name="HashSet" dataInputs="//@executableElements.1/@result/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.HashSet"/>
+//    </parameters>
+//    <parameters name="arg0" dataInputs="//@executableElements.5/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="E"/>
+//    </parameters>
+//    <result>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="boolean"/>
+//    </result>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:XMLMapLibraryActivity" name="DataMapALaBase.xsl" description="perform mapping DataMapALaBase.xsl" template="&lt;%return%> com.ibm.wbiserver.transform.util.TransformTypeHelper.transformTypes(&lt;%inputsToObjectMap%>, &lt;%outputs%>,&quot;DataMapALaBase.xsl&quot;);" XMLMapName="DataMapALaBase.xsl">
+//    <parameters name="inputsToObjectMap" dataInputs="//@executableElements.0/@result/@dataOutputs.1">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.LinkedHashMap"/>
+//    </parameters>
+//    <parameters name="outputs" dataInputs="//@executableElements.1/@result/@dataOutputs.1">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.LinkedHashSet"/>
+//    </parameters>
+//    <result name="outputsToObjectMap">
+//      <dataOutputs target="//@executableElements.10/@parameters.0"/>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.Map"/>
+//    </result>
+//    <exceptions>
+//      <dataOutputs target="//@executableElements.11/@parameters.0"/>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.lang.Exception"/>
+//    </exceptions>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:Expression" dataInputs="//@executableElements.10/@result/@dataOutputs.0" value="documentos" variable="true">
+//    <type xsi:type="com.ibm.wbit.activity:XSDElementType" name="listaDocumentoOutWS" namespace="http://OM_RequiereProceso_Lib"/>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:VariableNameExpression" value="&quot;documentos&quot;" assignable="false" nameOfVariable="documentos">
+//    <dataOutputs target="//@executableElements.10/@parameters.1"/>
+//    <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="String"/>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:JavaActivity" name="get" category="java.util.Map" className="java.util.Map" memberName="get">
+//    <parameters name="Map" dataInputs="//@executableElements.7/@result/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.util.Map"/>
+//    </parameters>
+//    <parameters name="arg0" dataInputs="//@executableElements.9/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.lang.Object"/>
+//    </parameters>
+//    <result>
+//      <dataOutputs target="//@executableElements.8"/>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="V"/>
+//    </result>
+//  </executableElements>
+//  <executableElements xsi:type="com.ibm.wbit.activity:ExceptionHandler" name="Exception Handler" collapsed="true">
+//    <parameters name="ex" dataInputs="//@executableElements.7/@exceptions.0/@dataOutputs.0">
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.lang.Exception"/>
+//    </parameters>
+//    <executableElements xsi:type="com.ibm.wbit.activity:Expression" value="ex" input="true">
+//      <dataOutputs target="//@executableElements.11/@executableElements.1/@parameters.0"/>
+//      <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.lang.Exception"/>
+//    </executableElements>
+//    <executableElements xsi:type="com.ibm.wbit.activity:JavaActivity" name="printStackTrace" category="java.lang.Throwable" className="java.lang.Throwable" memberName="printStackTrace">
+//      <parameters name="Throwable" dataInputs="//@executableElements.11/@executableElements.0/@dataOutputs.0">
+//        <type xsi:type="com.ibm.wbit.activity:JavaElementType" name="java.lang.Throwable"/>
+//      </parameters>
+//    </executableElements>
+//  </executableElements>
+//</com.ibm.wbit.activity:CompositeActivity>
+//@generated:end
+//!SMAP!*S WBIACTDBG
+//!SMAP!*L
+//!SMAP!1:1,1
+//!SMAP!2:2,1
+//!SMAP!4:4,1
+//!SMAP!5:3,1
+//!SMAP!6:5,1
+//!SMAP!7:6,1
+//!SMAP!8:9,4
+//!SMAP!9:19,1
+//!SMAP!10:17,1
+//!SMAP!11:18,1
+//!SMAP!13:14,1
+//!SMAP!14:15,1
+//!SMAP!1000000:147,1]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:invoke name="Snippet_SetearCircuitoChecklist" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Setear Semaforo Circuito Checklist" wpc:id="144">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[documentos.setInt("idCircuito", Integer.valueOf( CicuitosArqDeVentaResponse.getDataObject("circuito").getDataObject("circuito").getString("idCircuito")));
+documentos.setInt("idAccion", Integer.valueOf( CicuitosArqDeVentaResponse.getDataObject("circuito").getDataObject("circuito").getString("idAccionCircuito")));
+documentos.setString("semaforo", input_requiereProceso.getString("semaforoGenerico"));
+documentos.setString("canal", input_requiereProceso.getString("canal"));
+documentos.setString("uuid", uuid);
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:invoke name="Invoke_InsertarChecklist" operation="insertarChecklist" partnerLink="consultasBDPartner" portType="ns4:consultasBD" wpc:continueOnError="inherit" wpc:displayName="Insertar Checklist" wpc:id="145">
+            <wpc:input>
+              <wpc:parameter name="input_insertarChecklist" variable="documentos"/>
+            </wpc:input>
+            <wpc:output>
+              <wpc:parameter name="output_insertarChecklist" variable="outputInsertarBD"/>
+            </wpc:output>
+            <bpws:catchAll wpc:id="146">
+              <bpws:sequence name="HiddenSequence3" wpc:id="1073741971">
+                <bpws:invoke name="Snippet_LogErrorInsertarChecklist" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Error Insertar Checklist" wpc:id="70">
+                  <wpc:script>
+                    <wpc:javaCode><![CDATA[respuestaTransaccion.setString("codigo", "102");
+respuestaTransaccion.setString("severidad", "Error");
+respuestaTransaccion.setString("descripcion", "Error al insertar checklist: " + input_requiereProceso.getString("numeroSolicitud"));
+output_requiereProceso.setDataObject("resultadoOperacion", respuestaTransaccion);
+
+com.ibm.bpe.api.BpelException bpelexception = getCurrentFaultAsException();
+String mensaje = "Error tecnico al insertar checklist: " + bpelexception.getRootCause().toString();
+Log.logTomAplicaciones_error(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";" + mensaje);
+]]></wpc:javaCode>
+                  </wpc:script>
+                </bpws:invoke>
+                <bpws:reply name="Reply_InsertarChecklist" operation="requiereProceso" partnerLink="RequiereProceso" portType="ns1:RequiereProceso" wpc:displayName="Reply" wpc:id="100">
+                  <wpc:input>
+                    <wpc:parameter name="output_requiereProceso" variable="output_requiereProceso"/>
+                  </wpc:input>
+                </bpws:reply>
+                <bpws:terminate name="Terminate_InsertarChecklist" wpc:displayName="Terminate" wpc:id="71"/>
+              </bpws:sequence>
+            </bpws:catchAll>
+          </bpws:invoke>
+          <bpws:invoke name="Snippet_SetearIniciarInstancia" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Setear Iniciar Instancia" wpc:id="138">
+            <wpc:script>
+              <wpc:javaCode><![CDATA[input_IniciarInstancia.setInt("circuitoProceso", CicuitosArqDeVentaResponse.getInt("circuito/circuito/idCircuito"));
+input_IniciarInstancia.setString("solicitud", input_requiereProceso.getString("numeroSolicitud"));
+input_IniciarInstancia.setString("solicitudCabecera", "Solicitud Nro " + input_requiereProceso.getString("numeroSolicitud"));
+input_IniciarInstancia.setString("proximoPaso", input_requiereProceso.getString("semaforoGenerico"));
+input_IniciarInstancia.setString("uuid", uuid);
+]]></wpc:javaCode>
+            </wpc:script>
+          </bpws:invoke>
+          <bpws:invoke name="Invoke1" operation="iniciarInstancia" partnerLink="IniciarInstanciaPartner" portType="ns6:IniciarInstancia" wpc:continueOnError="inherit" wpc:displayName="Iniciar Instancia" wpc:id="76">
+            <wpc:input>
+              <wpc:parameter name="input_IniciarInstancia" variable="input_IniciarInstancia"/>
+            </wpc:input>
+            <wpc:output>
+              <wpc:parameter name="output_IniciarInstancia" variable="output_IniciarInstancia"/>
+            </wpc:output>
+          </bpws:invoke>
+          <bpws:switch name="InicioInstancia" wpc:displayName="¿Inicio Instancia?" wpc:id="105">
+            <bpws:case wpc:displayName="Si" wpc:id="139">
+              <bpws:condition expressionLanguage="http://www.ibm.com/xmlns/prod/websphere/business-process/expression-lang/java/6.0.0/"><![CDATA[try{
+	return !output_IniciarInstancia.getString("codigo").equals("0");
+}catch(Exception e){
+	return false;
+}
+
+
+]]></bpws:condition>
+              <bpws:sequence name="HiddenSequence1" wpc:id="1073741973">
+                <bpws:invoke name="Snippet_SetearUpdateInstancia" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Setear Update Instancia" wpc:id="140">
+                  <wpc:script>
+                    <wpc:javaCode><![CDATA[input_updateInstancia.setString("nroSolicitud", input_requiereProceso.getString("numeroSolicitud"));
+input_updateInstancia.setString("nroInstancia", output_IniciarInstancia.getString("processId"));
+input_updateInstancia.setString("nombreProceso", output_IniciarInstancia.getString("processName"));
+input_updateInstancia.setString("uuid", uuid);
+]]></wpc:javaCode>
+                  </wpc:script>
+                </bpws:invoke>
+                <bpws:invoke name="Invoke22" operation="updateInstancia" partnerLink="consultasBDPartner" portType="ns4:consultasBD" wpc:continueOnError="inherit" wpc:displayName="Update Instancia" wpc:id="79">
+                  <wpc:input>
+                    <wpc:parameter name="input_updateInstancia" variable="input_updateInstancia"/>
+                  </wpc:input>
+                  <bpws:catchAll wpc:id="150">
+                    <bpws:invoke name="Snippet_ErrorUpdateInstancia" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Error: Insertar Update Instancia" wpc:id="130">
+                      <wpc:script>
+                        <wpc:javaCode><![CDATA[respuestaTransaccion.setString("codigo", "102");
+respuestaTransaccion.setString("severidad", "Error");
+respuestaTransaccion.setString("descripcion", "Error Update Instancia: " + input_requiereProceso.getString("numeroSolicitud"));
+output_requiereProceso.setDataObject("resultadoOperacion", respuestaTransaccion);
+
+com.ibm.bpe.api.BpelException bpelexception = getCurrentFaultAsException();
+String mensaje = "Error Update Instancia: " + bpelexception.getRootCause().toString();
+Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";" + mensaje);
+]]></wpc:javaCode>
+                      </wpc:script>
+                    </bpws:invoke>
+                  </bpws:catchAll>
+                </bpws:invoke>
+                <bpws:invoke name="Snippet_LogTransaccionOK" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Transaccion OK" wpc:id="159">
+                  <wpc:script>
+                    <wpc:javaCode><![CDATA[respuestaTransaccion.setString("codigo", "000");
+respuestaTransaccion.setString("severidad", "OK");
+respuestaTransaccion.setString("descripcion", "Se finalizo sin errores el proceso de iniciar instancia: " + input_requiereProceso.getString("numeroSolicitud") );
+output_requiereProceso.setDataObject("resultadoOperacion", respuestaTransaccion);]]></wpc:javaCode>
+                  </wpc:script>
+                </bpws:invoke>
+              </bpws:sequence>
+            </bpws:case>
+            <bpws:otherwise wpc:id="142">
+              <bpws:sequence name="HiddenSequence8" wpc:id="1073741980">
+                <bpws:invoke name="Snippet_LogErrorIniciarInstancia" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Error Iniciar Instancia" wpc:id="143">
+                  <wpc:script>
+                    <wpc:javaCode><![CDATA[respuestaTransaccion.setString("codigo", "102");
+respuestaTransaccion.setString("severidad", "Error");
+respuestaTransaccion.setString("descripcion", "Error al iniciar instancia: " + input_requiereProceso.getString("numeroSolicitud"));
+output_requiereProceso.setDataObject("resultadoOperacion", respuestaTransaccion);
+
+Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";" + "Error tecnico al iniciar instancia");]]></wpc:javaCode>
+                  </wpc:script>
+                </bpws:invoke>
+                <bpws:reply name="Reply_InsertarChecklist1" operation="requiereProceso" partnerLink="RequiereProceso" portType="ns1:RequiereProceso" wpc:displayName="Reply" wpc:id="157">
+                  <wpc:input>
+                    <wpc:parameter name="output_requiereProceso" variable="output_requiereProceso"/>
+                  </wpc:input>
+                </bpws:reply>
+                <bpws:terminate name="Terminate_InsertarChecklist1" wpc:displayName="Terminate" wpc:id="158"/>
+              </bpws:sequence>
+            </bpws:otherwise>
+          </bpws:switch>
+        </bpws:sequence>
+      </bpws:otherwise>
+    </bpws:switch>
+    <bpws:invoke name="Snippet_LogFin" operation="null" partnerLink="null" portType="wpc:null" wpc:continueOnError="inherit" wpc:displayName="Log Fin" wpc:id="49">
+      <wpc:script>
+        <wpc:javaCode><![CDATA[tiempo_fin = System.currentTimeMillis();
+String mensaje = "Tiempo: " + (tiempo_fin - tiempo_inicio) + " ms. Fin. " + output_requiereProceso.getString("resultadoOperacion/descripcion");
+Log.logTomAplicaciones_info(uuid + ";BPEL;" + processInstance().getDisplayName()+ ";" + mensaje);]]></wpc:javaCode>
+      </wpc:script>
+    </bpws:invoke>
+  </bpws:sequence>
+</bpws:process>

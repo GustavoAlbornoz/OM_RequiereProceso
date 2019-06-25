@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" targetNamespace="http://OM_RequiereProceso/DataMapALaBase" version="8.0.4.0" xmlns:map="http://OM_RequiereProceso/DataMapALaBase">
+    <input path="/_235/_56/_0/_10/decisionservice/ws/checklistarqdeventa/checklistarqdeventa/v75_wsdl.wsdl"/>
+    <output path="/listaDocumentoOutWS.xsd"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="in2" uri="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta/param"/>
+        <namespace kind="supplement" prefix="in3" uri="checkListArqDeVenta"/>
+        <namespace kind="supplement" prefix="in" uri="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta"/>
+        <namespace kind="supplement" prefix="out" uri="http://OM_RequiereProceso_Lib"/>
+    </namespaces>
+    <mappingDeclaration name="DataMapALaBase">
+        <input namespace="http://www.ibm.com/rules/decisionservice/ChecklistArqDeVenta/ChecklistArqDeVenta" path="ChecklistArqDeVentaResponse"/>
+        <output namespace="http://OM_RequiereProceso_Lib" path="type('listaDocumentoOutWS')"/>
+        <move>
+            <input path="checklist/checklist/NroDeSolicitud"/>
+            <output path="nroSolicitud"/>
+        </move>
+        <foreach>
+            <input path="checklist/checklist/Documentos/Documento"/>
+            <output path="documentos"/>
+            <move automap="true">
+                <input path="Integrante/idHost"/>
+                <output path="integrante/idHost"/>
+            </move>
+            <move automap="true">
+                <input path="Integrante/Apellido"/>
+                <output path="integrante/apellido"/>
+            </move>
+            <move automap="true">
+                <input path="Integrante/Nombre"/>
+                <output path="integrante/nombre"/>
+            </move>
+            <move automap="true">
+                <input path="Integrante/TipoIntegrante"/>
+                <output path="integrante/tipoIntegrante"/>
+            </move>
+            <move automap="true">
+                <input path="Integrante/SemaforoIndividual"/>
+                <output path="integrante/semaforoIndividual"/>
+            </move>
+            <move automap="true">
+                <input path="Integrante/ResponsableImpositivo"/>
+                <output path="integrante/responsableImpositivo"/>
+            </move>
+            <move automap="true">
+                <input path="Integrante/Edad"/>
+                <output path="integrante/edad"/>
+            </move>
+            <move automap="true">
+                <input path="Integrante/EstadoCivil"/>
+                <output path="integrante/estadoCivil"/>
+            </move>
+            <move automap="true">
+                <input path="DescripcionExtendida"/>
+                <output path="descripcionExtendida"/>
+            </move>
+            <move automap="true">
+                <input path="Regla"/>
+                <output path="regla"/>
+            </move>
+            <move automap="true">
+                <input path="Descripcion"/>
+                <output path="descripcion"/>
+            </move>
+            <move automap="true">
+                <input path="Descripcion"/>
+                <output path="integrante/particularidades/descripcion"/>
+            </move>
+            <move automap="true">
+                <input path="NombreDocumento"/>
+                <output path="nombreDocumento"/>
+            </move>
+            <move automap="true">
+                <input path="IDDocumento"/>
+                <output path="idDocumento"/>
+            </move>
+            <move automap="true">
+                <input path="Obligatoriedad"/>
+                <output path="obligatoriedad"/>
+            </move>
+            <move automap="true">
+                <input path="Agrupacion"/>
+                <output path="agrupacion"/>
+            </move>
+            <move automap="true">
+                <input path="definicionCondicional"/>
+                <output path="definicionCondicional"/>
+            </move>
+            <move automap="true">
+                <input path="Observaciones"/>
+                <output path="observaciones"/>
+            </move>
+            <move automap="true">
+                <input path="Mensaje"/>
+                <output path="mensaje"/>
+            </move>
+            <move automap="true">
+                <input path="EtapaProceso"/>
+                <output path="etapaProceso"/>
+            </move>
+            <move automap="true">
+                <input path="Interno"/>
+                <output path="interno"/>
+            </move>
+        </foreach>
+    </mappingDeclaration>
+</mappingRoot>

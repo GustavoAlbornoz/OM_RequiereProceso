@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scdl:import xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://www.ibm.com/rules/decisionservice/CicuitosArqDeVenta/CicuitosArqDeVenta" xmlns:scdl="http://www.ibm.com/xmlns/prod/websphere/scdl/6.0.0" xmlns:wsdl="http://www.ibm.com/xmlns/prod/websphere/scdl/wsdl/6.0.0" displayName="CircuitosArqDeVenta_SCA" name="CircuitosArqDeVenta_SCA">
+  <interfaces>
+    <interface xsi:type="wsdl:WSDLPortType" portType="ns1:CicuitosArqDeVentaDecisionService">
+      <scdl:interfaceQualifier xsi:type="scdl:JoinTransaction" value="true"/>
+    </interface>
+  </interfaces>
+  <esbBinding xsi:type="scdl:SCAImportBinding" module="ODMServices" export="CircuitosArqDeVenta_MedExport">
+    <scdl:bindingQualifier xsi:type="scdl:IsTargetSCA" value="true"/>
+  </esbBinding>
+</scdl:import>

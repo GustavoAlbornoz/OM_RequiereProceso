@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="gen/|gen/src/|.apt_generated/" kind="src" path=""/>
+	<classpathentry kind="src" path="gen/src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/com.ibm.ws.ast.st.runtime.runtimeTarget.v85.bi/wps.v857">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.utility"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/IBM Process Server v8.5.7 JRE">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="src" path="/OM_RequiereProceso_Lib"/>
+	<classpathentry exported="true" kind="src" path="/ServiceManager"/>
+	<classpathentry exported="true" kind="src" path="/ODMServices_Lib"/>
+	<classpathentry kind="lib" path="/ServiceManager/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/ServiceManager/lib/gson-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/ServiceManager/lib/commons-vfs2-2.0.jar"/>
+	<classpathentry kind="lib" path="/ServiceManager/lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="/ServiceManager/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
